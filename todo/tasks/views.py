@@ -15,7 +15,7 @@ def tasks(request):
             temp.username = user
             temp.save()
             form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.order_by('priority')
         return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
     else:
         if 'username' not in request.COOKIES:
@@ -42,7 +42,7 @@ def check_user_validity(request):
     try:
         return Username.objects.get(username__exact=request.COOKIES["username"])
     except Exception:
-        return False
+        return True
 
 def delete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
