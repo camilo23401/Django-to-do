@@ -30,7 +30,7 @@ def tasks(request):
             return response
         # this is where GET request are accessed
         form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.order_by('priority')
         user = Username.objects.filter(username=request.COOKIES.get('username'))
     return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
 
