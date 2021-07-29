@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='task',
             name='username',
-            field=models.CharField(default='omkar', max_length=50, unique=True),
+            field=models.CharField(default='omkar', max_length=50, unique=True, null=True),
             preserve_default=False,
         ),
     ]

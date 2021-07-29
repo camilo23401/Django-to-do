@@ -10,13 +10,11 @@ def tasks(request):
         # this is wehere POST request is accessed
         form = TaskForm(request.POST or None)
         if form.is_valid():
-            user = Username.objects.get(username=request.COOKIES.get('username'))
             temp = form.save(commit=False)
-            temp.username = user
             temp.save()
             form = TaskForm()
         tasks = Task.objects.order_by('priority')
-        return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
+        return render(request, 'tasks.html', {'form': form, 'tasks': tasks})
     else:
         if 'username' not in request.COOKIES:
             from django.utils.crypto import get_random_string
@@ -47,7 +45,7 @@ def check_user_validity(request):
 def delete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
         #now check if user trying to access this task actually created this task
-        Task.objects.filter(id=id,username=Username.objects.get(username__exact=request.COOKIES["username"])).delete()
+        Task.objects.filter(id=id).delete()
         return redirect(reverse('tasks'))
     else:
         return HttpResponse("You are not allowed to access this resource")
